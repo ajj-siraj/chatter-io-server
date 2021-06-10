@@ -40,14 +40,17 @@ wss.on("connection", (ws) => {
     let userList = [];
     let parsed = JSON.parse(data);
 
+    //frontend client sends an initial message with the username, we collect it here.
     if(parsed.type === "initial") {
       ws.clientID = parsed.username;
     } 
     
+    //add the clients to the userlist
     wss.clients.forEach((client) => {
       userList.push(client.clientID);
     });
 
+    //broadcast the message to all connected clients
     wss.clients.forEach((client) => {
       let response = {
         data: parsed,
